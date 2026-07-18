@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "check": "npx tsc --noEmit",
-    "start": "node --loader ts-node/esm src/index.ts"
+    "dev": "vite"
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,13 @@
   "homepage": "https://github.com/Drei-Nitsu/itelect4-project#readme",
   "devDependencies": {
     "@types/node": "^20.12.12",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "react": "^19.2.7",
+    "react-dom": "^18.3.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vite": "^5.3.1"
   }
 }

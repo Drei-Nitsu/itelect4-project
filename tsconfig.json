@@ -10,6 +10,8 @@
     "module": "nodenext",
     "target": "esnext",
     // For nodejs, this uses the `@types/node` package you installed
+    "jsx": "react-jsx",
+    "lib": ["esnext", "dom"],
     "types": ["node"],
 
     // Other Outputs
