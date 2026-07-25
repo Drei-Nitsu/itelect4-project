@@ -1,46 +1,37 @@
-export interface User {
-  id:       number;
-  name:     string;
-  email:    string;
-  role:     "student" | "admin" | "instructor"; 
-  isActive: boolean;
-  score?:   number; 
+export enum TaskStatus {
+  Pending = "pending",
+  InProgress = "in_progress",
+  Completed = "completed",
 }
  
-export interface Course {
-  code:     string;
-  title:    string;
-  units:    number;
-  semester: string;
+export interface Project {
+  id: number;
+  title: string;
+  description: string;
 }
  
-export interface Submission {
-  id:          number;
-  studentId:   number;
-  courseCode:  string;
-  repoUrl:     string;
-  submittedAt: Date;
-  score?:      number; 
+export interface Task {
+  id: number;
+  projectId: number;
+  title: string;
+  status: TaskStatus;
+  assignedTo?: string; 
 }
-
-export type ID = number | string;
  
-export type Coordinate = {
-  x: number;
-  y: number;
-};
+export interface LogEntry {
+  id: number;
+  taskId: number;
+  action: string;
+  timestamp: Date;
+}
  
-export type Formatter = (value: number) => string;
+export interface ApiResponse<T> {
+  success: boolean;
+  data: T;
+  message?: string;
+}
  
-export type StringOrNumber = string | number;
-export type Status         = "pending" | "active" | "inactive"; 
- 
-export declare function printId(id: StringOrNumber): void;
- 
-export type StudentWithCourse = User & {
-  enrolledCourse: Course;
-  gpa:            number;
-};
- 
-export declare function processInput(input: StringOrNumber): string;
-export declare function formatDate(value: string | Date): string;
+export type TaskUpdate = Partial<Task>; 
+export type TaskPreview = Pick<Task, "id" | "title" | "status">; 
+export type PublicProject = Omit<Project, "description">; 
+export type TaskStatusCount = Record<TaskStatus, number>; 
