@@ -1,8 +1,7 @@
-import React from "react";
 import type { Task } from "../types";
 export interface TaskItemProps {
   task: Task;
-  onToggleStatus: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onToggleStatus: () => void;
 }
 const TaskItem: React.FC<TaskItemProps> = ({ task, onToggleStatus }) => {
   return (

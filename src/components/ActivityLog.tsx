@@ -1,4 +1,3 @@
-import React from "react";
 import type { LogEntry } from "../types";
 export interface ActivityLogProps {
   logs: LogEntry[];
