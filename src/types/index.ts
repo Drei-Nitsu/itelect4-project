@@ -15,7 +15,6 @@ export interface Task {
   projectId: number;
   title: string;
   status: TaskStatus;
-  assignedTo?: string; 
 }
  
 export interface LogEntry {
@@ -23,4 +22,23 @@ export interface LogEntry {
   taskId: number;
   action: string;
   timestamp: Date;
+}
+
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+export interface Course {
+  id: number;
+  title: string;
+  description: string;
+  credits: number;
+}
+
+export enum SubmissionStatus {
+  Submitted = "Submitted",
+  Late = "Late",
+  Graded = "Graded",
 }

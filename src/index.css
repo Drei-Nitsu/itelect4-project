@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #5294e2;
+}
+
+@layer base {
+  body {
+    font-family: system-ui, sans-serif;
+  }
+}
+
+@custom-variant dark (&:where(.dark, .dark *));

@@ -18,10 +18,10 @@ This is a TypeScript-based application for tracking projects, task lifecycles, a
 * `PublicProject`: `Omit<Project, "description">` for public project payload responses.
 * `TaskStatusCount`: `Record<TaskStatus, number>` for mapping task status counts.
 
-### 3. Application Execution (`src/index.ts`)
-* Imports defined types and interfaces from `../types/index`.
-* Demonstrates mock data creation and generic API response functions.
-* Implements utility functions using `TaskPreview` and `ApiResponse<T>`.
+### 3. Application Execution (`src/main.tsx`)
+* The application's entry point, which renders the main `App` component.
+* It sets up React's Strict Mode and imports the global stylesheet `index.css`.
+* The `App` component manages state, contains application logic, and renders all other UI components.
 
 ---
 

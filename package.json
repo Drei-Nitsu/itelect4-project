@@ -22,10 +22,12 @@
   },
   "homepage": "https://github.com/Drei-Nitsu/itelect4-project#readme",
   "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
     "@types/node": "^20.19.43",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react": "^4.7.0",
+    "tailwindcss": "^4.3.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "vite": "^5.4.21"

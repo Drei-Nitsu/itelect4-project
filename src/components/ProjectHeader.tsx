@@ -1,13 +1,16 @@
 import type { Project } from "../types";
-export interface ProjectHeaderProps {
+import { FC } from "react";
+
+interface ProjectHeaderProps {
   project: Project;
 }
-const ProjectHeader: React.FC<ProjectHeaderProps> = ({ project }) => {
+
+const ProjectHeader: FC<ProjectHeaderProps> = ({ project }) => {
   return (
-    <header className="project-header">
-      <h2>{project.title}</h2>
-      <p>{project.description}</p>
-    </header>
+    <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
+      {project.title}
+    </h1>
   );
 };
+
 export default ProjectHeader;
