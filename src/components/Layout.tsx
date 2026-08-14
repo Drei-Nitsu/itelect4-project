@@ -18,7 +18,7 @@ function Layout() {
     <div className={isDarkMode ? "dark" : ""}>
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <nav className="flex items-center gap-2 border-b border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
-          <span className="mr-4 font-bold text-gray-900 dark:text-white">Submission Tracker</span>
+          <span className="mr-4 font-bold text-gray-900 dark:text-white">Project & Task Management</span>
           <NavLink to="/" end className={linkClass}>
             Dashboard
           </NavLink>

@@ -4,6 +4,7 @@ import { initialTasks, mockLogs } from "../data/mockData";
 import TaskItem from "../components/TaskItem";
 import ActivityLog from "../components/ActivityLog";
 import usePrevious from "../hooks/usePrevious";
+import { Link } from "react-router";
 
 function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -45,7 +46,18 @@ function TasksPage() {
 
       <div className="mt-4 space-y-3">
         {filtered.length > 0 ? (
-          filtered.map((task) => <TaskItem key={task.id} task={task} onToggleStatus={() => handleToggleStatus(task.id)} />)
+          filtered.map((task) => (
+            <div key={task.id} className="flex items-center justify-between">
+              <div className="flex-1">
+                <TaskItem task={task} onToggleStatus={() => handleToggleStatus(task.id)} />
+              </div>
+              <div className="ml-4">
+                <Link to={`/tasks/${task.id}`} className="rounded bg-gray-100 px-3 py-1 text-sm text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300">
+                  Details
+                </Link>
+              </div>
+            </div>
+          ))
         ) : (
           <p className="text-sm text-gray-500">No tasks found.</p>
         )}

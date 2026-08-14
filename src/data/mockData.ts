@@ -18,8 +18,14 @@ export const mockLogs: LogEntry[] = [
 
 export const mockUser: User = {
   id: 1,
-  name: "John Doe",
-  email: "john.doe@example.com",
+  name: "Lance Lenard Fedelicio",
+  email: "lance.fedelicio@example.com",
+};
+
+export const secondUser: User = {
+  id: 2,
+  name: "Marc Lawrence Dela Pena",
+  email: "marc.delapena@example.com",
 };
 
 export const mockCourse: Course = {
