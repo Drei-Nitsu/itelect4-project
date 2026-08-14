@@ -42,3 +42,12 @@ export enum SubmissionStatus {
   Late = "Late",
   Graded = "Graded",
 }
+
+export interface Submission {
+  id: number;
+  studentId: number;
+  courseCode: string;
+  repoUrl: string;
+  submittedAt: Date;
+  score?: number; // Optional, as seen in your mock data
+}
