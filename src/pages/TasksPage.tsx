@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { Task } from "../types";
+import { TaskStatus } from "../types";
 import { initialTasks, mockLogs } from "../data/mockData";
 import TaskItem from "../components/TaskItem";
 import ActivityLog from "../components/ActivityLog";
@@ -25,10 +26,10 @@ function TasksPage() {
   const handleToggleStatus = (taskId: number) => {
     const taskToUpdate = tasks.find((t) => t.id === taskId);
     if (!taskToUpdate) return;
-    const statusCycle = ["pending", "in_progress", "completed"] as const;
+    const statusCycle = [TaskStatus.Pending, TaskStatus.InProgress, TaskStatus.Completed];
     const current = taskToUpdate.status;
-    const idx = statusCycle.indexOf(current as any);
-    const next = statusCycle[(idx + 1) % statusCycle.length] as any;
+    const idx = statusCycle.indexOf(current);
+    const next = statusCycle[(idx + 1) % statusCycle.length];
     setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, status: next } : t)));
     const newLog = { id: logs.length + 1, taskId, action: `Task ${taskId} status changed to ${next}`, timestamp: new Date() };
     setLogs((p) => [...p, newLog]);

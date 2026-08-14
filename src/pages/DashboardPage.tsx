@@ -2,6 +2,7 @@ import UserCard from "../components/UserCard";
 import CourseCard from "../components/CourseCard";
 import SubmissionBadge from "../components/SubmissionBadge";
 import { mockUser, mockCourse, allSubmissions } from "../data/mockData";
+import { SubmissionStatus } from "../types";
 
 function DashboardPage() {
   return (
@@ -16,8 +17,8 @@ function DashboardPage() {
       <div className="mt-6">
         <h3 className="mb-2 text-lg font-semibold text-gray-800 dark:text-white">Recent Submissions</h3>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {allSubmissions.map((s: any) => (
-            <SubmissionBadge key={s.id} status={s.score ? "Graded" : "Submitted" as any} />
+        {allSubmissions.map((s) => (
+          <SubmissionBadge key={s.id} status={s.score ? SubmissionStatus.Graded : SubmissionStatus.Submitted} />
           ))}
         </div>
       </div>
