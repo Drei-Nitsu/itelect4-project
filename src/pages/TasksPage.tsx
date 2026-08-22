@@ -1,36 +1,38 @@
-import { useEffect, useRef, useState } from "react";
-import type { Task } from "../types";
+import { useRef, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import type { Task, ApiTask } from "../types";
 import { TaskStatus } from "../types";
-import { initialTasks, mockLogs } from "../data/mockData";
+import { mockLogs } from "../data/mockData";
+import { getTasks } from "../api/client";
 import TaskItem from "../components/TaskItem";
 import ActivityLog from "../components/ActivityLog";
 import usePrevious from "../hooks/usePrevious";
+import useUiStore from "../store/uiStore";
 import { Link } from "react-router";
 
 function TasksPage() {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const queryClient = useQueryClient();
+  const { data: apiTasks = [], isLoading, isError } = useQuery({
+    queryKey: ["tasks"],
+    queryFn: getTasks,
+  });
+  const tasks: Task[] = apiTasks.map((t) => ({ ...t, id: Number(t.id) }));
+
   const [logs, setLogs] = useState(mockLogs);
-  const [isLoading, setIsLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
+  const searchTerm = useUiStore((s) => s.searchTerm);
+  const setSearchTerm = useUiStore((s) => s.setSearchTerm);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const previousSearch = usePrevious(searchTerm);
-
-  useEffect(() => {
-    const t = setTimeout(() => {
-      setTasks(initialTasks);
-      setIsLoading(false);
-    }, 300);
-    return () => clearTimeout(t);
-  }, []);
 
   const handleToggleStatus = (taskId: number) => {
     const taskToUpdate = tasks.find((t) => t.id === taskId);
     if (!taskToUpdate) return;
     const statusCycle = [TaskStatus.Pending, TaskStatus.InProgress, TaskStatus.Completed];
-    const current = taskToUpdate.status;
-    const idx = statusCycle.indexOf(current);
+    const idx = statusCycle.indexOf(taskToUpdate.status);
     const next = statusCycle[(idx + 1) % statusCycle.length];
-    setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, status: next } : t)));
+    queryClient.setQueryData<ApiTask[]>(["tasks"], (old) =>
+      old?.map((t) => (Number(t.id) === taskId ? { ...t, status: next } : t))
+    );
     const newLog = { id: logs.length + 1, taskId, action: `Task ${taskId} status changed to ${next}`, timestamp: new Date() };
     setLogs((p) => [...p, newLog]);
   };
@@ -38,6 +40,7 @@ function TasksPage() {
   const filtered = tasks.filter((task) => task.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   if (isLoading) return <div className="animate-pulse p-6">Loading tasks...</div>;
+  if (isError) return <div className="rounded-lg bg-red-50 p-4 text-red-700">Failed to load tasks.</div>;
 
   return (
     <div>

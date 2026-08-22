@@ -1,0 +1,11 @@
+{
+  "tasks": [
+    { "id": "101", "projectId": 1, "title": "Design new UI mockups", "status": "pending" },
+    { "id": "102", "projectId": 1, "title": "Develop login component", "status": "in_progress" },
+    { "id": "103", "projectId": 1, "title": "Write API integration tests", "status": "completed" }
+  ],
+  "submissions": [
+    { "id": "1", "studentId": 1, "courseCode": "ITELECT4", "repoUrl": "github.com/juan/itelect4-project", "submittedAt": "2026-08-01T09:00:00.000Z", "score": 95 },
+    { "id": "2", "studentId": 1, "courseCode": "ITELECT3", "repoUrl": "github.com/juan/itelect3-final", "submittedAt": "2026-08-10T14:30:00.000Z" }
+  ]
+}
