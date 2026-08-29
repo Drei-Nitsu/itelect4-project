@@ -1,8 +1,13 @@
-import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import SubmissionBadge from "../components/SubmissionBadge";
 import { getSubmissions, createSubmission } from "../api/client";
 import { SubmissionStatus } from "../types";
+import { submissionSchema, type SubmissionFormValues } from "../schemas/submissionSchema";
 
 function SubmissionsPage() {
   const queryClient = useQueryClient();
@@ -11,22 +16,27 @@ function SubmissionsPage() {
     queryFn: getSubmissions,
   });
 
-  const [courseCode, setCourseCode] = useState("");
-  const [repoUrl, setRepoUrl] = useState("");
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<SubmissionFormValues>({
+    resolver: zodResolver(submissionSchema),
+    mode: "onBlur",
+    defaultValues: { courseCode: "", repoUrl: "" },
+  });
 
   const mutation = useMutation({
     mutationFn: createSubmission,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["submissions"] });
-      setCourseCode("");
-      setRepoUrl("");
+      reset();
     },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!courseCode || !repoUrl) return;
-    mutation.mutate({ studentId: 1, courseCode, repoUrl, submittedAt: new Date().toISOString() });
+  const onSubmit = (data: SubmissionFormValues) => {
+    mutation.mutate({ studentId: 1, ...data, submittedAt: new Date().toISOString() });
   };
 
   if (isLoading) return <div className="animate-pulse p-6">Loading submissions...</div>;
@@ -36,26 +46,40 @@ function SubmissionsPage() {
     <div>
       <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">My Submissions</h2>
 
-      <form onSubmit={handleSubmit} className="mb-6 flex flex-wrap gap-2">
-        <input
-          value={courseCode}
-          onChange={(e) => setCourseCode(e.target.value)}
-          placeholder="Course code"
-          className="rounded border border-gray-300 p-2"
-        />
-        <input
-          value={repoUrl}
-          onChange={(e) => setRepoUrl(e.target.value)}
-          placeholder="Repo URL"
-          className="flex-1 rounded border border-gray-300 p-2"
-        />
-        <button
-          type="submit"
-          disabled={mutation.isPending}
-          className="rounded bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white disabled:bg-gray-400"
-        >
+      <form onSubmit={handleSubmit(onSubmit)} className="mb-6 flex flex-wrap items-start gap-2">
+        <div>
+          <Label htmlFor="courseCode" className="text-foreground mb-1">
+            Course code
+          </Label>
+          <Input
+            id="courseCode"
+            {...register("courseCode")}
+            placeholder="Course code"
+            aria-invalid={errors.courseCode ? true : undefined}
+          />
+          {errors.courseCode && (
+            <p className="mt-1 text-sm text-red-600">{errors.courseCode.message}</p>
+          )}
+        </div>
+
+        <div className="flex-1">
+          <Label htmlFor="repoUrl" className="text-foreground mb-1">
+            Repo URL
+          </Label>
+          <Input
+            id="repoUrl"
+            {...register("repoUrl")}
+            placeholder="Repo URL"
+            aria-invalid={errors.repoUrl ? true : undefined}
+          />
+          {errors.repoUrl && (
+            <p className="mt-1 text-sm text-red-600">{errors.repoUrl.message}</p>
+          )}
+        </div>
+
+        <Button type="submit" disabled={mutation.isPending}>
           {mutation.isPending ? "Submitting..." : "Submit"}
-        </button>
+        </Button>
       </form>
       {mutation.isError && <p className="mb-4 text-sm text-red-600">Failed to submit. Please try again.</p>}
 
