@@ -51,3 +51,13 @@ export interface Submission {
   submittedAt: Date;
   score?: number; // Optional, as seen in your mock data
 }
+
+// Wire types: json-server returns ids and dates as plain strings.
+export type ApiTask = Omit<Task, "id"> & { id: string };
+
+export type ApiSubmission = Omit<Submission, "id" | "submittedAt"> & {
+  id: string;
+  submittedAt: string;
+};
+
+export type NewSubmission = Omit<ApiSubmission, "id">;

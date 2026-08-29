@@ -1,14 +1,20 @@
 import { useParams, useNavigate } from "react-router";
-import { initialTasks } from "../data/mockData";
+import { useQuery } from "@tanstack/react-query";
+import { getTaskById } from "../api/client";
 
 function TaskDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const taskId = id ? parseInt(id, 10) : NaN;
-  const task = initialTasks.find((t) => t.id === taskId);
+  const { data: task, isLoading, isError } = useQuery({
+    queryKey: ["tasks", id],
+    queryFn: () => getTaskById(id!),
+    enabled: Boolean(id),
+  });
 
-  if (!task) {
+  if (isLoading) return <div className="animate-pulse p-6">Loading task...</div>;
+
+  if (isError || !task) {
     return (
       <div className="rounded-lg bg-red-50 p-4 text-red-700">No task found with id "{id}".</div>
     );
