@@ -4,7 +4,7 @@ Frontend application for IT Elective 4 (GT4 Part 2: Deploy both repos, then conn
 Built with React, TypeScript, Tailwind CSS, TanStack Query, and Vite. Deployed on Vercel.
 
 ## Live Deployment Links
-- **Live Frontend App**: https://itelect4-project-beryl.vercel.app
+- **Live Frontend App**: https://itelect4-project-beta.vercel.app
 - **Live Backend API**: https://itelect4-backend-beryl.vercel.app
 
 ## GT4 Part 2 Implementations
