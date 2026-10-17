@@ -1,22 +1,21 @@
 import { z } from "zod";
 
-// studentId and submittedAt are set by the app at submit time, so only the
-// two fields the student actually types are validated here.
+const GITHUB_REPO_URL = /^https?:\/\/(www\.)?github\.com\/[\w.-]+\/[\w.-]+\/?$/i;
+
+// Only the two fields the student actually inputs are validated here.
+// studentId is derived from the JWT on the server, and submittedAt is auto-assigned.
 export const submissionSchema = z
   .object({
-    // matches the course code format in db.json, e.g. ITELECT4
     courseCode: z
       .string()
       .min(1, "Course code is required")
-      .regex(/^[A-Z]{2,10}\d{1,2}$/, "Course code must look like ITELECT4 (letters, then a number)"),
+      .regex(/^[A-Z]{2,10}\d{1,4}$/, "Course code must look like ITELECT4 or CS101"),
 
-    // no .url() — existing repo links have no "https://" prefix
     repoUrl: z
       .string()
       .min(1, "Repo URL is required")
-      .regex(/github\.com/i, "Repo URL must be a GitHub link"),
+      .regex(GITHUB_REPO_URL, "Repo URL must be a valid GitHub repo (e.g. https://github.com/user/repo)"),
   })
-  // the repo should actually belong to the course being submitted
   .refine(
     (data) => data.repoUrl.toLowerCase().includes(data.courseCode.toLowerCase()),
     {

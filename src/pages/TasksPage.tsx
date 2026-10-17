@@ -24,14 +24,14 @@ function TasksPage() {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const previousSearch = usePrevious(searchTerm);
 
-  const handleToggleStatus = (taskId: number) => {
-    const taskToUpdate = tasks.find((t) => t.id === taskId);
+  const handleToggleStatus = (taskId: number | string) => {
+    const taskToUpdate = tasks.find((t) => String(t.id) === String(taskId));
     if (!taskToUpdate) return;
     const statusCycle = [TaskStatus.Pending, TaskStatus.InProgress, TaskStatus.Completed];
     const idx = statusCycle.indexOf(taskToUpdate.status);
     const next = statusCycle[(idx + 1) % statusCycle.length];
     queryClient.setQueryData<ApiTask[]>(["tasks"], (old) =>
-      old?.map((t) => (Number(t.id) === taskId ? { ...t, status: next } : t))
+      old?.map((t) => (String(t.id) === String(taskId) ? { ...t, status: next } : t))
     );
     const newLog = { id: logs.length + 1, taskId, action: `Task ${taskId} status changed to ${next}`, timestamp: new Date() };
     setLogs((p) => [...p, newLog]);

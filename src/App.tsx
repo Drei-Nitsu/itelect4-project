@@ -7,6 +7,7 @@ import ProjectPage from "./pages/ProjectPage";
 import SubmissionsPage from "./pages/SubmissionsPage";
 import TaskDetailPage from "./pages/TaskDetailPage";
 import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="tasks/:id" element={<TaskDetailPage />} />
         <Route path="project" element={<ProjectPage />} />
         <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
         <Route element={<ProtectedRoute />}>
           <Route path="submissions" element={<SubmissionsPage />} />
         </Route>
