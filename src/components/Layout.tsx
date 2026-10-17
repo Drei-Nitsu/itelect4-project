@@ -33,11 +33,16 @@ function Layout() {
             Submissions
           </NavLink>
           {userName === null ? (
-            <NavLink to="/login" className={linkClass}>
-              Login
-            </NavLink>
+            <>
+              <NavLink to="/login" className={linkClass}>
+                Login
+              </NavLink>
+              <NavLink to="/register" className={linkClass}>
+                Register
+              </NavLink>
+            </>
           ) : (
-            <button onClick={logout} className="rounded px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300">
+            <button onClick={logout} className="rounded px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700">
               Logout ({userName})
             </button>
           )}

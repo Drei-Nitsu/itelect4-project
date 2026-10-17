@@ -4,34 +4,39 @@ export enum TaskStatus {
   Completed = "completed",
 }
 
+export type Role = "student" | "admin" | "instructor";
+
 export interface Project {
-  id: number;
+  id: number | string;
   title: string;
   description: string;
 }
- 
+
 export interface Task {
-  id: number;
-  projectId: number;
+  id: number | string;
+  projectId: number | string;
   title: string;
   status: TaskStatus;
 }
- 
+
 export interface LogEntry {
-  id: number;
-  taskId: number;
+  id: number | string;
+  taskId: number | string;
   action: string;
   timestamp: Date;
 }
 
 export interface User {
-  id: number;
+  id: string | number;
   name: string;
   email: string;
+  role?: Role;
+  isActive?: boolean;
 }
 
 export interface Course {
-  id: number;
+  id: string | number;
+  code?: string;
   title: string;
   description: string;
   credits: number;
@@ -44,20 +49,32 @@ export enum SubmissionStatus {
 }
 
 export interface Submission {
-  id: number;
-  studentId: number;
+  id: string;
+  studentId: string;
   courseCode: string;
   repoUrl: string;
-  submittedAt: Date;
-  score?: number; // Optional, as seen in your mock data
+  submittedAt: string;
+  score?: number;
 }
 
-// Wire types: json-server returns ids and dates as plain strings.
+export type ApiSubmission = Submission;
+
+/**
+ * Cleaned up submission payload:
+ * No invented studentId or submittedAt — the server automatically derives
+ * studentId from the JWT token and submittedAt from the current timestamp.
+ */
+export interface NewSubmissionBody {
+  courseCode: string;
+  repoUrl: string;
+}
+
+export type NewSubmission = NewSubmissionBody;
+
+export interface AuthResponse {
+  token: string;
+  user: User;
+}
+
+// Wire type for Task
 export type ApiTask = Omit<Task, "id"> & { id: string };
-
-export type ApiSubmission = Omit<Submission, "id" | "submittedAt"> & {
-  id: string;
-  submittedAt: string;
-};
-
-export type NewSubmission = Omit<ApiSubmission, "id">;
