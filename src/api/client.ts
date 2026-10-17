@@ -9,7 +9,7 @@ import type {
 } from "../types";
 import { TaskStatus } from "../types";
 
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+const BASE_URL = import.meta.env.VITE_API_URL || "";
 
 export interface RequestOptions extends RequestInit {
   requiresAuth?: boolean;
