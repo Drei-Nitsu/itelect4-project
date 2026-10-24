@@ -78,3 +78,22 @@ export interface AuthResponse {
 
 // Wire type for Task
 export type ApiTask = Omit<Task, "id"> & { id: string };
+
+
+/* ==========================================================================
+ * AI Review Types (GT5)
+ * ========================================================================== */
+
+export type AiRating =
+  | "excellent"
+  | "good"
+  | "satisfactory"
+  | "needs_improvement"
+  | "poor";
+
+export interface AiReply {
+  rating: AiRating;
+  summary: string;
+  strengths: string[];
+  suggestions: string[];
+}
