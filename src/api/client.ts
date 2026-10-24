@@ -147,3 +147,17 @@ export async function getTaskById(id: string): Promise<ApiTask> {
     throw new Error(`Task ${id} not found`);
   }
 }
+
+
+/* ==========================================================================
+ * AI Review Endpoints (GT5)
+ * ========================================================================== */
+
+import type { AiReply } from "../types";
+
+export async function askAi(prompt: string): Promise<AiReply> {
+  return request<AiReply>("/api/ai", {
+    method: "POST",
+    body: JSON.stringify({ prompt }),
+  });
+}
