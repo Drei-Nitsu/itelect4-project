@@ -1,33 +1,37 @@
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import useAuthStore from "../store/authStore";
 import { loginUser } from "../api/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { loginSchema, type LoginFormValues } from "../schemas/loginSchema";
 
 function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const setAuth = useAuthStore((s) => s.setAuth);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!email || !password) {
-      setError("Please fill in both email and password.");
-      return;
-    }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: "", password: "" },
+  });
 
+  const onSubmit = async (data: LoginFormValues) => {
     setError(null);
     setIsLoading(true);
 
     try {
-      const data = await loginUser({ email, password });
-      setAuth(data.token, data.user);
+      const result = await loginUser({ email: data.email, password: data.password });
+      setAuth(result.token, result.user);
       navigate("/submissions");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed. Please check your credentials.");
@@ -38,7 +42,7 @@ function LoginPage() {
 
   return (
     <div className="mx-auto max-w-md rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-850">
-      <h2 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">Sign In</h2>
+      <h2 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">Log In</h2>
       <p className="mb-6 text-sm text-gray-600 dark:text-gray-400">
         Enter your credentials to access your submissions.
       </p>
@@ -49,20 +53,21 @@ function LoginPage() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
           <Label htmlFor="email" className="text-foreground mb-1 block">
-            Email address
+            Email
           </Label>
           <Input
             id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            {...register("email")}
             placeholder="you@example.com"
-            required
             autoComplete="email"
           />
+          {errors.email && (
+            <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+          )}
         </div>
 
         <div>
@@ -72,16 +77,17 @@ function LoginPage() {
           <Input
             id="password"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            {...register("password")}
             placeholder="••••••••"
-            required
             autoComplete="current-password"
           />
+          {errors.password && (
+            <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+          )}
         </div>
 
         <Button type="submit" disabled={isLoading} className="w-full">
-          {isLoading ? "Signing in..." : "Sign In"}
+          {isLoading ? "Logging in..." : "Log In"}
         </Button>
       </form>
 
