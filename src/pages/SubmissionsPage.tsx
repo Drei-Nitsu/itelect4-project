@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import SubmissionBadge from "../components/SubmissionBadge";
 import { getSubmissions, createSubmission, getCourses } from "../api/client";
-import { SubmissionStatus } from "../types";
 import { submissionSchema, type SubmissionFormValues } from "../schemas/submissionSchema";
 
 function SubmissionsPage() {
@@ -132,9 +131,7 @@ function SubmissionsPage() {
               <div>
                 <div className="flex items-center justify-between">
                   <h4 className="font-semibold text-gray-900 dark:text-white">{s.courseCode}</h4>
-                  <SubmissionBadge
-                    status={s.score !== undefined ? SubmissionStatus.Graded : SubmissionStatus.Submitted}
-                  />
+                  <SubmissionBadge submission={s} />
                 </div>
                 <a
                   href={s.repoUrl}

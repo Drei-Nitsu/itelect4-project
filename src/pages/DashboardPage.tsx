@@ -2,7 +2,6 @@ import UserCard from "../components/UserCard";
 import CourseCard from "../components/CourseCard";
 import SubmissionBadge from "../components/SubmissionBadge";
 import { mockUser, mockCourse } from "../data/mockData";
-import { SubmissionStatus } from "../types";
 import { useQuery } from "@tanstack/react-query";
 import { getSubmissions, getCourses } from "../api/client";
 import useAuthStore from "../store/authStore";
@@ -54,9 +53,7 @@ function DashboardPage() {
                       {new Date(s.submittedAt).toLocaleDateString()}
                     </p>
                   </div>
-                  <SubmissionBadge
-                    status={s.score !== undefined ? SubmissionStatus.Graded : SubmissionStatus.Submitted}
-                  />
+                  <SubmissionBadge submission={s} />
                 </div>
               ))}
             </div>

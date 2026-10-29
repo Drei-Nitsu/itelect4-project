@@ -1,3 +1,5 @@
+[![CI](https://github.com/Drei-Nitsu/itelect4-project/actions/workflows/ci.yml/badge.svg)](https://github.com/Drei-Nitsu/itelect4-project/actions/workflows/ci.yml)
+
 # itelect4-project (GT4 Part 2)
 
 Frontend application for IT Elective 4 (GT4 Part 2: Deploy both repos, then connect them).

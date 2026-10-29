@@ -1,26 +1,20 @@
-import { SubmissionStatus } from "../types";
 import { FC } from "react";
+import type { ApiSubmission } from "../types/index";
 
 interface SubmissionBadgeProps {
-  status: SubmissionStatus;
+  submission: ApiSubmission;
 }
 
-const SubmissionBadge: FC<SubmissionBadgeProps> = ({ status }) => {
-  const badgeStyles = {
-    [SubmissionStatus.Submitted]: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300",
-    [SubmissionStatus.Late]: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300",
-    [SubmissionStatus.Graded]: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300",
-  };
-
+const SubmissionBadge: FC<SubmissionBadgeProps> = ({ submission }) => {
   return (
-    <span
-      className={`
-        inline-flex items-center rounded-md px-2 py-1 text-xs font-medium
-        ${badgeStyles[status]}
-      `}
-    >
-      {status}
-    </span>
+    <div className="inline-flex flex-col gap-1 rounded-md border border-gray-200 bg-white px-3 py-2 text-sm shadow-sm dark:border-gray-700 dark:bg-gray-900">
+      <span className="text-gray-700 dark:text-gray-300">
+        Repo: {submission.repoUrl}
+      </span>
+      <span className="font-medium text-gray-900 dark:text-white">
+        Score: {submission.score !== undefined ? submission.score : "Not graded yet"}
+      </span>
+    </div>
   );
 };
 
